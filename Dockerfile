@@ -7,13 +7,13 @@ COPY package.json package-lock.json ./
 
 # FROM base AS prod-deps
 
-# RUN bun install --production
+# RUN node install --production
 
 ## Dev dependencies
 
 FROM base AS build-deps
 
-RUN npm install
+RUN npm install --production=false
 
 ## Build app
 
