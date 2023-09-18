@@ -1,0 +1,107 @@
+# https://grrr.tech/posts/2021/github-actions-openvpn/
+name: deploy
+
+on:
+  push:
+    tags:
+      - "v[0-9]+.[0-9]+.[0-9]+"
+
+jobs:
+  build:
+    name: Build image
+
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v3
+
+      # Login against a Docker registry
+      # https://github.com/docker/login-action
+      - uses: docker/login-action@28218f9b04b4f3f62068d7b6ce6ca5b26e35336c
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # - name: Set up Docker Buildx
+      #   uses: docker/setup-buildx-action@v2
+
+      # Extract metadata (tags, labels) for Docker
+      # https://github.com/docker/metadata-action
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
+        with:
+          images: ghcr.io/${{ github.repository }}
+
+      # Build and push Docker image with Buildx
+      # https://github.com/docker/build-push-action
+      - name: Build and push
+        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+    outputs:
+      tags: ${{ steps.meta.outputs.tags }}
+
+  deploy:
+    name: Deploy image
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      # Deploy using webhook through OpenVPN
+      - name: Install OpenVPN
+        run: |
+          sudo apt-get update
+          sudo apt-get --assume-yes --no-install-recommends install openvpn
+
+      - name: Setup VPN config
+        run: |
+          echo "${{ secrets.CONFIG_OVPN }}" | base64 --decode > config.ovpn
+          echo "${{ secrets.OVPN_PASSWORD }}" | base64 --decode > password
+          chmod 600 config.ovpn password
+
+      - name: Connect VPN
+        run: sudo openvpn --askpass password --config config.ovpn --log vpn.log --daemon
+
+      - name: Wait for a VPN connection
+        timeout-minutes: 1
+        run: until nc -vzw 2 ${{ secrets.SERVER_IP }}; do sleep 2; done
+
+      - name: Deploy docker container webhook
+        uses: joelwmale/webhook-action@448a17bf857ead98546cfbdbe3b9d4cf979dda95
+        with:
+          url: ${{ secrets.WEBHOOK_URL }}
+          headers: '{"X-Token": "${{ secrets.WEBHOOK_TOKEN  }}"}'
+          body: >-
+            { "DOCKER_PASSWORD": "${{ secrets.GITHUB_TOKEN }}",
+            "DOCKER_TAG": "${{ needs.build.outputs.tags }}" }
+
+      # Server can be slow-ish when it comes to pulling new image
+      # GITHUB_TOKEN might expire before server will manage to pull the
+      # new image (that token expires after action is done)
+      # You might want to do some fancy pooling or just slap some
+      # sleep if that's good enough for you
+      # As we're not building a production system here I recommend the latter
+      - name: Sleep for 15 seconds
+        run: sleep 15
+
+      - name: Kill VPN connection
+        if: always()
+        run: |
+          sudo chmod 777 vpn.log
+          sudo killall openvpn
+
+      - name: Upload VPN logs
+        uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: VPN logs
+          path: vpn.log
