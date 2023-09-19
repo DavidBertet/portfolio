@@ -1,7 +1,121 @@
 ---
+import AboutMe from "../components/AboutMe.astro";
+import ConnectWithMe from "../components/ConnectWithMe.astro";
+import Experience from "../components/Experience.astro";
+import Footer from "../components/Footer.astro";
+import Project from "../components/Project.astro";
+import Title from "../components/Title.astro";
 import Layout from "../layouts/Layout.astro";
+
+const experiences = await Astro.glob("../content/experiences/*.md");
+const work = await Astro.glob("../content/work/*.md");
+const perso = await Astro.glob("../content/perso/*.md");
 ---
 
 <Layout title="David Bertet">
-  <main>Hello world!!!</main>
+  <main>
+    <section class="bg-[#476f83] text-gray-100">
+      <div class="grid-cols-0 grid gap-2 md:grid-cols-2">
+        <div>
+          <div class="text-4xl">Hi there! 👋</div>
+
+          <div
+            class="mt-12 text-5xl font-bold text-[#FE8B5D] md:mt-24 md:text-7xl lg:text-9xl"
+          >
+            David Bertet
+          </div>
+          <div class="mb-6 md:mb-8">I am a creator</div>
+          <AboutMe />
+        </div>
+
+        <div>
+          <img class="aspect-square w-full rounded-lg" src="home.jpg" />
+        </div>
+      </div>
+
+      <ConnectWithMe />
+    </section>
+
+    <section>
+      <Title title="Relevant experiences" />
+
+      <div class="relative">
+        <span
+          class="absolute left-[7.5px] top-0 h-full w-[1px] bg-gray-400 md:left-1/2"
+        ></span>
+
+        <div class="flex flex-wrap">
+          {
+            experiences
+              .sort((a, b) =>
+                b.frontmatter.dates.localeCompare(a.frontmatter.dates),
+              )
+              .map((experience, index) => (
+                <Experience
+                  enterprise={experience.frontmatter.enterprise}
+                  role={experience.frontmatter.role}
+                  location={experience.frontmatter.location}
+                  dates={experience.frontmatter.dates}
+                  isLeft={index % 2 == 0}
+                >
+                  <experience.Content />
+                </Experience>
+              ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <Title title="Work projects" />
+
+      <div class="grid grid-cols-project gap-4">
+        {
+          work
+            .sort((a, b) => b.frontmatter.year - a.frontmatter.year)
+            .map((project) => (
+              <Project
+                name={project.frontmatter.name}
+                image={project.frontmatter.image}
+              />
+            ))
+        }
+      </div>
+    </section>
+
+    <section>
+      <Title title="Side projects" subtitle="Mastering requires practice" />
+
+      <div class="grid grid-cols-project gap-4">
+        {
+          perso
+            .sort((a, b) => b.frontmatter.year - a.frontmatter.year)
+            .map((project) => (
+              <Project
+                name={project.frontmatter.name}
+                image={project.frontmatter.image}
+              />
+            ))
+        }
+      </div>
+    </section>
+  </main>
+
+  <Footer />
 </Layout>
+
+<style>
+  @tailwind base;
+  @tailwind components;
+  @tailwind utilities;
+
+  @layer base {
+    section {
+      @apply p-12;
+    }
+
+    section:nth-child(even) {
+      @apply bg-[#9cb9c7];
+    }
+  }
+</style>

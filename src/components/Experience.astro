@@ -1,0 +1,33 @@
+---
+interface Props {
+  enterprise: string;
+  role: string;
+  location: string;
+  dates: string;
+  isLeft: boolean;
+}
+
+const { enterprise, role, location, dates, isLeft } = Astro.props;
+const textCss = isLeft ? "md:text-right" : "";
+const bulletCss = isLeft
+  ? "left-0 md:left-auto md:right-[-8px]"
+  : "md:left-[-8px]";
+---
+
+{!isLeft && <div class="w-0 md:w-1/2" />}
+<div
+  class={"relative w-full pb-10 ps-10 text-left md:w-1/2 md:pe-10 " + textCss}
+>
+  <span
+    class={"absolute left-0 top-2 h-4 w-4 rounded-full border-4 border-purple-700 bg-white " +
+      bulletCss}></span>
+  <div class="text-xl font-medium text-black">{enterprise}</div>
+  <div class="pb-2 font-bold text-slate-400">{role} | {location}</div>
+  <span
+    class="mb-4 inline-flex rounded-full bg-[#476f83] p-1.5 px-3 text-xs font-semibold text-gray-100"
+  >
+    {dates}
+  </span>
+  <div class="pb-2 text-slate-500"><slot /></div>
+</div>
+{isLeft && <div class="w-0 md:w-1/2" />}
