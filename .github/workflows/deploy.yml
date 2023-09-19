@@ -45,12 +45,15 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
-      - name: Compute output tag
-        id: compute-tag
-        run: echo "tag=$(echo "${{ steps.meta.outputs.tags }}" | head -1 )" >> "$GITHUB_OUTPUT"
+      - name: Compute outputs
+        id: compute-outputs
+        run: |
+          echo "tag=$(echo "${{ steps.meta.outputs.tags }}" | head -1 )" >> "$GITHUB_OUTPUT"
+          echo "docker-compose=$(base64 docker-compose.yml | tr -d '\n')" >> "$GITHUB_OUTPUT"
 
     outputs:
-      tag: ${{ steps.compute-tag.outputs.tag }}
+      tag: ${{ steps.compute-outputs.outputs.tag }}
+      docker-compose: ${{ steps.compute-outputs.outputs.docker-compose }}
 
   deploy:
     name: Deploy image
@@ -86,6 +89,7 @@ jobs:
           body: >-
             { "DOCKER_PASSWORD": "${{ secrets.GITHUB_TOKEN }}", 
             "DOCKER_PROJECT": "${{ github.event.repository.name }}",
+            "DOCKER_COMPOSE": "${{ needs.build.outputs.docker-compose }}",
             "DOCKER_TAG": "${{ needs.build.outputs.tag }}" }
 
       - name: Kill VPN connection
