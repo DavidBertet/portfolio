@@ -1,0 +1,26 @@
+---
+interface Props {
+  name: string;
+  image?: string;
+}
+
+const { name, image } = Astro.props;
+---
+
+<div
+  class="group flex relative aspect-square shadow-xl rounded-lg overflow-hidden cursor-pointer"
+>
+  <img
+    class="object-cover absolute w-full h-full bg-purple-400 group-hover:rotate-6 group-hover:scale-125 ease-in-out duration-500"
+    src={image}
+  />
+
+  <div class="absolute p-2">
+    {name}
+  </div>
+
+  <div
+    class="absolute bg-black w-full h-full opacity-0 transition-opacity duration-500 group-hover:opacity-50"
+  >
+  </div>
+</div>
