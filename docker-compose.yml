@@ -6,16 +6,21 @@ services:
     restart: always
     image: ${DOCKER_TAG}
 
-    network_mode: "bridge"
-    expose:
-      - "8080"
+    networks:
+      frontend:
 
     logging:
       options:
         max-size: "10m"
         max-file: "5"
 
-    environment:
-      - VIRTUAL_HOST=david.bertet.fr
-      - VIRTUAL_PORT=8080
-      - VIRTUAL_PATH=/
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.portfolio.tls=true
+      - traefik.http.routers.portfolio.rule=Host(`david.bertet.fr`)
+      - traefik.http.routers.portfolio.entrypoints=websecure
+      - traefik.http.services.portfolio.loadbalancer.server.port=8080
+
+networks:
+  frontend:
+    external: true
