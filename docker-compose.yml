@@ -17,8 +17,11 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.routers.portfolio.tls=true
-      - traefik.http.routers.portfolio.rule=Host(`david.bertet.fr`)
+      - traefik.http.routers.portfolio.rule=Host(`david.bertet.fr`) && PathPrefix(`/new`)
       - traefik.http.routers.portfolio.entrypoints=websecure
+      - traefik.http.routers.portfolio.middlewares=strippreffix-newportfolio
+      - traefik.http.middlewares.strippreffix-newportfolio.stripprefix.prefixes=/new
+      - traefik.http.middlewares.strippreffix-newportfolio.stripprefix.forceSlash=false
       - traefik.http.services.portfolio.loadbalancer.server.port=8080
 
 networks:
