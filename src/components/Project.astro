@@ -16,7 +16,7 @@ const { image, link } = Astro.props;
   <ConditionalLink link={link} target="_blank">
     <img
       class="absolute h-full w-full bg-purple-400 object-cover duration-500 ease-in-out group-hover:rotate-6 group-hover:scale-125"
-      src={image}
+      src={import.meta.env.BASE_URL + "/" + image}
     />
 
     <div
