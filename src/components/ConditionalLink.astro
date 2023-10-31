@@ -1,0 +1,18 @@
+---
+interface Props {
+  link?: string;
+  target: string;
+}
+
+const { link, target } = Astro.props;
+---
+
+{
+  link ? (
+    <a href={link} target={target}>
+      <slot />
+    </a>
+  ) : (
+    <slot />
+  )
+}

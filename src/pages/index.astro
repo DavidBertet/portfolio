@@ -14,7 +14,7 @@ const perso = await Astro.glob("../content/perso/*.md");
 
 <Layout title="David Bertet">
   <main>
-    <section class="bg-[#476f83] text-gray-100">
+    <header class=" p-12 bg-[#476f83] text-gray-200">
       <div class="grid-cols-0 grid gap-2 md:grid-cols-2">
         <div>
           <div class="text-4xl">Hi there! 👋</div>
@@ -24,7 +24,7 @@ const perso = await Astro.glob("../content/perso/*.md");
           >
             David Bertet
           </div>
-          <div class="mb-6 md:mb-8">I am a creator</div>
+          <div class="mb-6 md:mb-8">Currently creating stuff</div>
           <AboutMe />
         </div>
 
@@ -33,8 +33,10 @@ const perso = await Astro.glob("../content/perso/*.md");
         </div>
       </div>
 
-      <ConnectWithMe />
-    </section>
+      <div class="mt-10">
+        <ConnectWithMe />
+      </div>
+    </header>
 
     <section>
       <Title title="Relevant experiences" />
@@ -77,6 +79,7 @@ const perso = await Astro.glob("../content/perso/*.md");
               <Project
                 name={project.frontmatter.name}
                 image={project.frontmatter.image}
+                link={project.frontmatter.link}
               />
             ))
         }
@@ -94,6 +97,7 @@ const perso = await Astro.glob("../content/perso/*.md");
               <Project
                 name={project.frontmatter.name}
                 image={project.frontmatter.image}
+                link={project.frontmatter.link}
               />
             ))
         }
@@ -115,7 +119,11 @@ const perso = await Astro.glob("../content/perso/*.md");
     }
 
     section:nth-child(even) {
-      @apply bg-[#9cb9c7];
+      @apply bg-[#bed1da];
     }
+
+    section:nth-child(odd) {
+      @apply bg-[#c1dae6];
+    }    
   }
 </style>

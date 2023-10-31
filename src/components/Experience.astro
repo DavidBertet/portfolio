@@ -19,15 +19,15 @@ const bulletCss = isLeft
   class={"relative w-full pb-10 ps-10 text-left md:w-1/2 md:pe-10 " + textCss}
 >
   <span
-    class={"absolute left-0 top-2 h-4 w-4 rounded-full border-4 border-purple-700 bg-white " +
+    class={"absolute left-0 top-2 h-4 w-4 rounded-full border-4 border-[#FE8B5D] bg-white " +
       bulletCss}></span>
   <div class="text-xl font-medium text-black">{enterprise}</div>
-  <div class="pb-2 font-bold text-slate-400">{role} | {location}</div>
+  <div class="pb-2 font-bold text-[#476f83]">{role} | {location}</div>
   <span
     class="mb-4 inline-flex rounded-full bg-[#476f83] p-1.5 px-3 text-xs font-semibold text-gray-100"
   >
     {dates}
   </span>
-  <div class="pb-2 text-slate-500"><slot /></div>
+  <div class:list={["pb-2 text-slate-500 prose prose-li:list-none prose-ul:ps-0 max-w-none"]}><slot /></div>
 </div>
 {isLeft && <div class="w-0 md:w-1/2" />}

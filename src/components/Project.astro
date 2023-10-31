@@ -1,26 +1,27 @@
 ---
+import ConditionalLink from "./ConditionalLink.astro";
+
 interface Props {
   name: string;
   image?: string;
+  link?: string;
 }
 
-const { name, image } = Astro.props;
+const { image, link } = Astro.props;
 ---
 
 <div
-  class="group flex relative aspect-square shadow-xl rounded-lg overflow-hidden cursor-pointer"
+  class="group relative flex aspect-square overflow-hidden rounded-lg shadow-xl"
 >
-  <img
-    class="object-cover absolute w-full h-full bg-purple-400 group-hover:rotate-6 group-hover:scale-125 ease-in-out duration-500"
-    src={image}
-  />
+  <ConditionalLink link={link} target="_blank">
+    <img
+      class="absolute h-full w-full bg-purple-400 object-cover duration-500 ease-in-out group-hover:rotate-6 group-hover:scale-125"
+      src={image}
+    />
 
-  <div class="absolute p-2">
-    {name}
-  </div>
-
-  <div
-    class="absolute bg-black w-full h-full opacity-0 transition-opacity duration-500 group-hover:opacity-50"
-  >
-  </div>
+    <div
+      class="absolute h-full w-full bg-black opacity-0 transition-opacity duration-500 group-hover:opacity-50"
+    >
+    </div>
+  </ConditionalLink>
 </div>
