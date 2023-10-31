@@ -19,14 +19,6 @@ jobs:
       # https://github.com/actions/checkout
       - uses: actions/checkout@v3
 
-      # https://github.com/actions/setup-python (required by Canvas)
-      - uses: actions/setup-python@v4
-        with:
-          python-version: "3.10"
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 20
-
       # Login against a Docker registry
       # https://github.com/docker/login-action
       - uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d
@@ -88,11 +80,6 @@ jobs:
         timeout-minutes: 1
         run: until nc -vzw 2 ${{ secrets.SERVER_IP }}; do sleep 2; done
 
-      - name: Prepare env
-        id: compute-env
-        run: |
-          echo "env=$(echo "${{ secrets.ENV_VARIABLES }}" | base64 | tr -d '\n')" >> "$GITHUB_OUTPUT"
-
       # https://github.com/joelwmale/webhook-action
       - name: Deploy docker container webhook
         uses: joelwmale/webhook-action@448a17bf857ead98546cfbdbe3b9d4cf979dda95
@@ -104,7 +91,7 @@ jobs:
             "DOCKER_PROJECT": "${{ github.event.repository.name }}",
             "DOCKER_COMPOSE": "${{ needs.build.outputs.docker-compose }}",
             "DOCKER_TAG": "${{ needs.build.outputs.tag }}",
-            "ENV_VARIABLES": "${{ steps.compute-env.outputs.env }}" }
+            "ENV_VARIABLES": "${{ secrets.ENV_VARIABLES }}" }
 
       - name: Kill VPN connection
         if: always()
@@ -112,5 +99,5 @@ jobs:
           sudo killall openvpn
 
       # Wait for the server to retrieve the image
-      - name: Sleep for 15 seconds
-        run: sleep 15
+      - name: Sleep for 180 seconds
+        run: sleep 180
