@@ -22,9 +22,7 @@ export const POST: APIRoute = async ({
 
   // Call reCaptcha API to verify the user
   const captchaResponse = await fetch(
-    `https://www.google.com/recaptcha/api/siteverify?secret=${
-      import.meta.env.RECAPTCHA_SECRET_KEY
-    }&response=${body["g-recaptcha-response"]}`,
+    `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${body["g-recaptcha-response"]}`,
     {
       method: "POST",
     },
@@ -64,8 +62,8 @@ const sendEmail = async (
   const purify = DOMPurify(window);
 
   const mailjet = new Mailjet({
-    apiKey: import.meta.env.MJ_APIKEY_PUBLIC,
-    apiSecret: import.meta.env.MJ_APIKEY_PRIVATE,
+    apiKey: process.env.MJ_APIKEY_PUBLIC,
+    apiSecret: process.env.MJ_APIKEY_PRIVATE,
   });
 
   const result = await mailjet.post("send", { version: "v3.1" }).request({
