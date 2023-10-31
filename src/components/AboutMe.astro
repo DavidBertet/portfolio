@@ -1,24 +1,47 @@
-<div>
-  <div class="mb-3 text-2xl text-[#9cb9c7] md:mb-4 md:text-4xl">About me</div>
+---
+import { Resvg } from "@resvg/resvg-js";
 
-  <ul>
-    <li class="mb-2 text-gray-500 md:mb-4">
-      <span class="block w-32 text-xl font-bold text-gray-700 md:inline-block"
+// Use images to display email and phone number
+const emailSvg = `
+  <svg xmlns="http://www.w3.org/2000/svg" width="420" height="45" viewBox="0 0 430 36">
+    <text fill="#bed1da" font-family="Josefin Sans" font-size="38">
+      <tspan x="0" y="32">${import.meta.env.EMAIL}</tspan>
+    </text>
+  </svg>`
+const emailImage = new Resvg(emailSvg, {
+  font: {
+    loadSystemFonts: false, // It will be faster to disable loading system fonts.
+    fontFiles: ['./JosefinSans.ttf'],
+  },
+}).render().asPng().toString("base64");
+
+---
+<div>
+  <div class="mb-3 text-2xl text-[#bed1da] md:mb-4 md:text-4xl">About me</div>
+
+  
+  <ul class="text-[#bed1da]">
+    <li class="mb-2 md:mb-4 flex flex-col md:flex-row">
+      <span class="block w-32 text-xl font-bold text-gray-800 md:inline-block me-1"
         >Email</span
       >
-       david.bertet@gmail.com
+      <div class="md:self-center w-[200px]">
+        <a href="redirect/email">
+          <img src=`data:image/png;base64,${emailImage}` alt="email" />
+        </a>
+      </div>
     </li>
-    <li class="mb-2 text-gray-500 md:mb-4">
-      <span class="block w-32 text-xl font-bold text-gray-700 md:inline-block"
+    <li class="mb-2 md:mb-4">
+      <span class="block w-32 text-xl font-bold text-gray-800 md:inline-block"
         >Address</span
       >
        Sillicon Valley, California - USA
     </li>
-    <li class="text-gray-500">
-      <span class="block w-32 text-xl font-bold text-gray-700 md:inline-block"
+    <li>
+      <span class="block w-32 text-xl font-bold text-gray-800 md:inline-block"
         >Current role</span
       >
-       Mobile architect @ Quotient
+       Software architect @ Quotient Technology Inc.
     </li>
   </ul>
 </div>
