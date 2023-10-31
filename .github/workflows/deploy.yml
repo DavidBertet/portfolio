@@ -35,6 +35,10 @@ jobs:
         with:
           images: ghcr.io/${{ github.repository }}
 
+      - name: Prepare environment variables
+        run: |
+          echo "${{ secrets.ENV_VARIABLES }}" | base64 -d > .env
+
       # Build and push Docker image with Buildx
       # https://github.com/docker/build-push-action
       - name: Build and push
