@@ -80,6 +80,11 @@ jobs:
         timeout-minutes: 1
         run: until nc -vzw 2 ${{ secrets.SERVER_IP }}; do sleep 2; done
 
+      - name: Prepare env
+        id: compute-env
+        run: |
+          echo "env=$(echo "${{ secrets.ENV_VARIABLES }}" | base64 | tr -d '\n')" >> "$GITHUB_OUTPUT"
+
       # https://github.com/joelwmale/webhook-action
       - name: Deploy docker container webhook
         uses: joelwmale/webhook-action@448a17bf857ead98546cfbdbe3b9d4cf979dda95
@@ -90,7 +95,8 @@ jobs:
             { "DOCKER_PASSWORD": "${{ secrets.GITHUB_TOKEN }}", 
             "DOCKER_PROJECT": "${{ github.event.repository.name }}",
             "DOCKER_COMPOSE": "${{ needs.build.outputs.docker-compose }}",
-            "DOCKER_TAG": "${{ needs.build.outputs.tag }}" }
+            "DOCKER_TAG": "${{ needs.build.outputs.tag }}",
+            "ENV_VARIABLES": "${{ steps.compute-env.outputs.env }}" }
 
       - name: Kill VPN connection
         if: always()
