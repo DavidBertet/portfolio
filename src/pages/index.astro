@@ -29,7 +29,7 @@ const perso = await Astro.glob("../content/perso/*.md");
         </div>
 
         <div>
-          <img class="aspect-square w-full rounded-lg" src="home.jpg" />
+          <img class="aspect-square w-full rounded-lg" src=`${import.meta.env.BASE_URL}/home.jpg` />
         </div>
       </div>
 
