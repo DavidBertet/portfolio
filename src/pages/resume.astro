@@ -50,7 +50,10 @@ const phoneImage = canvas.toDataURL('image/png')
     <section>
       <ul class="space-y-2">
         <li class="flex place-content-end">
-          <a href="redirect/email"><img class="w-[200px]" src={emailImage}/></a><Icon class="flex-shrink-0 aspect-square w-5 ms-1 text-blue-500" name="mdi:email" />
+          <a href=`${import.meta.env.BASE_URL}/redirect/email`>
+            <img class="w-[200px]" src={emailImage}/>
+          </a>
+          <Icon class="flex-shrink-0 aspect-square w-5 ms-1 text-blue-500" name="mdi:email" />
         </li>
         <li class="flex place-content-end">
           <img class="w-[200px]" src={phoneImage} /><Icon class="flex-shrink-0 aspect-square w-5 ms-1 text-blue-500" name="mdi:phone" />
