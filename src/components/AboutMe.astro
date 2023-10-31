@@ -1,19 +1,14 @@
 ---
-import { Resvg } from "@resvg/resvg-js";
+import { createCanvas, GlobalFonts } from "@napi-rs/canvas";
 
-// Use images to display email and phone number
-const emailSvg = `
-  <svg xmlns="http://www.w3.org/2000/svg" width="420" height="45" viewBox="0 0 430 36">
-    <text fill="#bed1da" font-family="Josefin Sans" font-size="38">
-      <tspan x="0" y="32">${import.meta.env.EMAIL}</tspan>
-    </text>
-  </svg>`
-const emailImage = new Resvg(emailSvg, {
-  font: {
-    loadSystemFonts: false, // It will be faster to disable loading system fonts.
-    fontFiles: ['./JosefinSans.ttf'],
-  },
-}).render().asPng().toString("base64");
+// Use images to display email
+GlobalFonts.registerFromPath('./JosefinSans.ttf')
+const canvas = createCanvas(400, 40)
+const ctx = canvas.getContext('2d')
+ctx.font = "36px Josefin Sans"
+ctx.fillStyle = "#bed1da"
+ctx.fillText(import.meta.env.EMAIL, 2, 30)
+const pngData = canvas.toDataURL('image/png')
 
 ---
 <div>
@@ -27,14 +22,12 @@ const emailImage = new Resvg(emailSvg, {
       >
       <div class="md:self-center w-[200px]">
         <a href="redirect/email">
-          <img src=`data:image/png;base64,${emailImage}` alt="email" />
+          <img src={pngData} alt="email" />
         </a>
       </div>
     </li>
     <li class="mb-2 md:mb-4">
-      <span class="block w-32 text-xl font-bold text-gray-800 md:inline-block"
-        >Address</span
-      >
+      <span class="block w-32 text-xl font-bold text-gray-800 md:inline-block">Address</span>
        Sillicon Valley, California - USA
     </li>
     <li>
