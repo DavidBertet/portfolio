@@ -10,11 +10,11 @@ import { createCanvas } from "@napi-rs/canvas";
 // Use images to display email
 const canvas = createCanvas(400, 40)
 const ctx = canvas.getContext('2d')
-ctx.font = "37px ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans',sans-serif,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol','Noto Color Emoji'"
+ctx.font = "37px ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji"
 ctx.fillText(import.meta.env.EMAIL, 0, 32)
 const emailImage = canvas.toDataURL('image/png')
 ctx.clearRect(0, 0, 400, 40)
-ctx.font = "34px ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans',sans-serif,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol','Noto Color Emoji'"
+ctx.font = "34px ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji"
 ctx.fillText(import.meta.env.PHONE, 170, 30)
 const phoneImage = canvas.toDataURL('image/png')
 
