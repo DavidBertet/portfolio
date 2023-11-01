@@ -2,7 +2,7 @@
 import { createCanvas, GlobalFonts } from "@napi-rs/canvas";
 
 // Use images to display email
-GlobalFonts.registerFromPath('./JosefinSans.ttf')
+GlobalFonts.registerFromPath('./build_fonts/JosefinSans.ttf')
 const canvas = createCanvas(400, 40)
 const ctx = canvas.getContext('2d')
 ctx.font = "36px Josefin Sans"
