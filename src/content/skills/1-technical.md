@@ -7,5 +7,3 @@ title: Technical skills
 - **CI/CD:** Jenkins, Fastlane, GH Action
 - **Web:** React, NextJS, SpringBoot
 - **Tools:** Git, Github, Jira, Confluence
-
-To hightlight a few used at work
