@@ -11,8 +11,8 @@ import { createCanvas, GlobalFonts } from "@napi-rs/canvas";
 GlobalFonts.registerFromPath('./build_fonts/Roboto.ttf')
 const canvas = createCanvas(400, 40)
 const ctx = canvas.getContext('2d')
-ctx.font = "37px Roboto"
-ctx.fillText(import.meta.env.EMAIL, 0, 32)
+ctx.font = "34px Roboto"
+ctx.fillText(import.meta.env.EMAIL, 28, 30)
 const emailImage = canvas.toDataURL('image/png')
 ctx.clearRect(0, 0, 400, 40)
 ctx.font = "34px Roboto"
@@ -54,6 +54,10 @@ const phoneImage = canvas.toDataURL('image/png')
 
     <section>
       <ul class="space-y-2">
+        <li class="flex place-content-end">
+          Sunnyvale, CA
+          <Icon class="flex-shrink-0 aspect-square w-5 ms-1 text-blue-500" name="mdi:location" />
+        </li>
         <li class="flex place-content-end">
           <a href=`${import.meta.env.BASE_URL}redirect/email`>
             <img class="w-[200px]" src={emailImage}/>
