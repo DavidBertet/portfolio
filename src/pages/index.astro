@@ -77,7 +77,8 @@ const perso = await Astro.glob("../content/perso/*.md");
             .sort((a, b) => b.frontmatter.year - a.frontmatter.year)
             .map((project) => (
               <Project
-                name={project.frontmatter.name}
+                description={project.frontmatter.short_description}
+                tech={project.frontmatter.tech}
                 image={project.frontmatter.image}
                 link={project.frontmatter.link}
               />
@@ -95,7 +96,8 @@ const perso = await Astro.glob("../content/perso/*.md");
             .sort((a, b) => b.frontmatter.year - a.frontmatter.year)
             .map((project) => (
               <Project
-                name={project.frontmatter.name}
+                description={project.frontmatter.short_description}
+                tech={project.frontmatter.tech}
                 image={project.frontmatter.image}
                 link={project.frontmatter.link}
               />

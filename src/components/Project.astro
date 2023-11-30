@@ -2,12 +2,13 @@
 import ConditionalLink from "./ConditionalLink.astro";
 
 interface Props {
-  name: string;
+  description: string;
+  tech?: string;
   image?: string;
   link?: string;
 }
 
-const { image, link } = Astro.props;
+const { description, tech, image, link } = Astro.props;
 ---
 
 <div
@@ -15,13 +16,20 @@ const { image, link } = Astro.props;
 >
   <ConditionalLink link={link} target="_blank">
     <img
-      class="absolute h-full w-full bg-purple-400 object-cover duration-500 ease-in-out group-hover:rotate-6 group-hover:scale-125"
+      class="absolute h-full w-full bg-[#476f83] object-cover duration-500 ease-in-out group-hover:rotate-6 group-hover:scale-125"
       src={import.meta.env.BASE_URL + image}
     />
 
     <div
-      class="absolute h-full w-full bg-black opacity-0 transition-opacity duration-500 group-hover:opacity-50"
+      class="absolute h-full w-full bg-black opacity-0 transition-opacity duration-500 group-hover:opacity-70"
     >
+    </div>
+
+    <div class="absolute h-full w-full text-white opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+      <div class="flex items-center justify-center h-full w-full">
+        <p class="text-2xl p-4 text-center">{description}</p>
+      </div>
+      <div class="absolute bottom-0 right-0 p-2">{tech}</div>
     </div>
   </ConditionalLink>
 </div>
