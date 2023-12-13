@@ -2,7 +2,7 @@
 title: Soft skills
 ---
 
-- Juniors mentoring
+- Mentoring
 - Problem solving
 - Automation finding
 - Pragmatism
