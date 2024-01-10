@@ -15,7 +15,7 @@ const perso = await Astro.glob("../content/perso/*.md");
 <Layout title="David Bertet">
   <main>
     <header class=" p-12 bg-[#476f83] text-gray-200">
-      <div class="grid-cols-0 grid gap-2 md:grid-cols-2">
+      <div class="grid-cols-0 grid gap-4 md:grid-cols-2">
         <div>
           <div class="text-4xl">Hi there! 👋</div>
 
@@ -28,7 +28,14 @@ const perso = await Astro.glob("../content/perso/*.md");
           <AboutMe />
         </div>
 
-        <div>
+        <div class="flex flex-col">
+          <a 
+            class="px-6 py-3 mb-4 text-sm text-center font-semibold uppercase self-end bg-[#FE8B5D] text-gray-800 rounded-lg w-full md:w-auto"
+            href=`${import.meta.env.BASE_URL}resume`
+            target="_blank"
+          >
+            My Resume
+          </a>
           <img class="aspect-square w-full rounded-lg" src=`${import.meta.env.BASE_URL}home.jpg` />
         </div>
       </div>
