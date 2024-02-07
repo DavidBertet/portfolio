@@ -4,5 +4,5 @@ title: Soft skills
 
 - Mentoring
 - Problem solving
-- Automation finding
+- Automation finder
 - Pragmatism

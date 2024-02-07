@@ -6,10 +6,10 @@ location: Mountain View, CA
 dates: 2019-present (4 yrs)
 ---
 
-- **Designed & developed iOS/Android apps** (Swift, Kotlin). **Multiplatform design**, VIPER pattern, Reactive programming. **99,99+% crash free**
-- **Mentored** developers and peer reviewing code and design to **grow the team skill**
-- Improved processes to **release every week** by moving to Kanban, encouraging smaller tasks/daily PRs, and automating tasks
-- **Shared good practices across the company**, CI/CD, processes, technical design and automation
-- Optimized **CI/CD pipelines** (Jenkins, Fastlane, Danger), permitting **automated code review** & **one click releases**
-- **Built internal tooling** to expose production data through web interface (NextJS, Docker). Used across the company, **saving hundreds of hours a month**
-- Worked with **cross-functional teams**, including product, UX, marketing, support and backend to identify options based on inputs from each team
+- **Designed, coded & maintained native iOS/Android apps** (Swift, Kotlin). **Multiplatform design**, VIPER, Reactive programming. **99,99+% crash free**
+- **Investigated most complicated user issues** through the whole stack, app/server/database (Embrace, Splunk, GCP) which contributed to achieving **4.5+ store rating** 
+- **Mentored** developers and peer reviewed code and design to **improve the team's productivity**
+- Worked with **cross-functional teams**, including QA, product, UX, server, marketing and support
+- Improved processes to **release every week**. Kanban, feature flag, smaller task, daily PR, task automation. Shipping often removed last minute rushes, simplified bug analysis and more 
+- Setup **CI**/**CD pipelines** (Jenkins, Appium). **Automated code review**, **testing** & **one-click release**
+- **Built internal tooling** to expose data through web interface (NextJS, Docker). Used across the company, **saving hundreds of hours a month**
