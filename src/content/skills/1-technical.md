@@ -6,5 +6,5 @@ title: Technical skills
 - **Android:** Kotlin, Java, Google Play
 - **Other:** TypeScript, C, C++, Ruby
 - **CI/CD:** Jenkins, Fastlane, GH Action
-- **Web:** React, NextJS, SpringBoot
+- **Web:** React, NextJS, Spring, Docker
 - **Tools:** Git, Github, Jira, Confluence
