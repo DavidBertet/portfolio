@@ -42,13 +42,13 @@ const phoneImage = canvas.toDataURL('image/png')
 </head>
 <body class="bg-white font-sans h-resume w-[1100px] m-auto p-4">
   <div class=" flex flex-row items-center">
-    <div class="pe-14 grow">
+    <div class="pe-13 grow">
       <h1 class="text-5xl font-bold p-name">David Bertet</h1>
       <p class="font-medium text-gray-500 p-note mt-4">
-        Results-driven software engineer with proven track record in crafting top-tier solutions on iOS & Android.<br />
+        Software engineer with 13 years experience in crafting top-tier solutions on iOS & Android.<br />
         I drive team and company growth through effective mentorship, automation, and strategic tooling.<br />
         Continuously refining my skills through side projects, I remain adaptable to emerging technologies.<br />
-        Looking for new challenges, I'm eager to contribute through innovative problem-solving and collaboration.
+        Looking for my next challenges, I'm eager to contribute through innovative problem-solving and collaboration.
       </p>
     </div>
 
@@ -77,7 +77,7 @@ const phoneImage = canvas.toDataURL('image/png')
     </section>
   </div>
 
-  <main class="grid grid-cols-[1fr_2.5fr] gap-10 mt-8">
+  <main class="grid grid-cols-[1fr_2.5fr] gap-10 mt-6">
     <section>
       <div>
         <h2 class="text-2xl font-bold border-b-blue-400 border-b-2">Hackathon</h2>
@@ -89,7 +89,7 @@ const phoneImage = canvas.toDataURL('image/png')
         {
           skills.map(skill => (
             <h3 class="text-xl mt-3 font-semibold">{skill.frontmatter.title}</h3>
-            <div class="p-skill-description prose prose-p:mt-1 prose-ul:mb-1"><skill.Content /></div>
+            <div class="p-skill-description prose prose-p:mt-1 prose-ul:mb-1 prose-li:ps-0"><skill.Content /></div>
           ))
         }
       </div>
