@@ -1,6 +1,7 @@
 ---
 import { Icon } from "astro-icon";
 
+import * as summary from "../content/summary.md";
 const skills = await Astro.glob("../content/skills/*.md");
 const experiences = await Astro.glob("../content/experiences/*.md");
 const perso = await Astro.glob("../content/perso/*.md");
@@ -44,12 +45,7 @@ const phoneImage = canvas.toDataURL('image/png')
   <div class=" flex flex-row items-center">
     <div class="pe-13 grow">
       <h1 class="text-5xl font-bold p-name">David Bertet</h1>
-      <p class="font-medium text-gray-500 p-note mt-4">
-        Software engineer with 13 years experience in crafting top-tier solutions on iOS & Android.<br />
-        I drive team and company growth through effective mentorship, automation, and strategic tooling.<br />
-        Continuously refining my skills through side projects, I remain adaptable to emerging technologies.<br />
-        Looking for my next challenges, I'm eager to contribute through innovative problem-solving and collaboration.
-      </p>
+      <div class="prose mt-4 leading-6 font-medium text-gray-500 w-full max-w-full"><summary.Content /></div>
     </div>
 
     <section>
