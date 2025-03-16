@@ -17,7 +17,7 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.routers.portfolio.tls=true
-      - traefik.http.routers.portfolio.rule=Host(`david.bertet.fr`)
+      - traefik.http.routers.portfolio.rule=Host(`bertet.fr`) || Host(`david.bertet.fr`) || Host(`www.bertet.fr`)
       - traefik.http.routers.portfolio.entrypoints=websecure
       - traefik.http.services.portfolio.loadbalancer.server.port=8080
 
