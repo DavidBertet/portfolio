@@ -38,6 +38,9 @@ RUN npm run build
 # -- SSR
 FROM base as runtime
 
+ARG GITHUB_SHA=dev
+ENV GITHUB_SHA=$GITHUB_SHA
+
 COPY --from=prod-deps /app/node_modules ./node_modules
 COPY --from=build /app/dist ./dist
 

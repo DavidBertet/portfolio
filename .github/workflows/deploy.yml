@@ -1,4 +1,4 @@
-# https://grrr.tech/posts/2021/github-actions-openvpn/
+# Deploy via Cloudflare Tunnel + Access
 name: deploy
 
 on:
@@ -52,6 +52,8 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            GITHUB_SHA=${{ github.sha }}
 
       - name: Compute outputs
         id: compute-outputs
@@ -69,43 +71,40 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Deploy using webhook through OpenVPN
-      - name: Install OpenVPN
-        run: |
-          sudo apt-get update
-          sudo apt-get --assume-yes --no-install-recommends install openvpn
-
-      - name: Setup VPN config
-        run: |
-          echo "${{ secrets.CONFIG_OVPN }}" | base64 --decode > config.ovpn
-          echo "${{ secrets.OVPN_PASSWORD }}" | base64 --decode > password
-          chmod 600 config.ovpn password
-
-      - name: Connect VPN
-        run: sudo openvpn --askpass password --config config.ovpn --log vpn.log --daemon
-
-      - name: Wait for a VPN connection
-        timeout-minutes: 1
-        run: until nc -vzw 2 ${{ secrets.SERVER_IP }}; do sleep 2; done
-
-      # https://github.com/joelwmale/webhook-action
+      # Deploy using webhook through Cloudflare Tunnel + Access
       - name: Deploy docker container webhook
-        uses: joelwmale/webhook-action@448a17bf857ead98546cfbdbe3b9d4cf979dda95
-        with:
-          url: ${{ secrets.WEBHOOK_URL }}
-          headers: '{"X-Token": "${{ secrets.WEBHOOK_TOKEN  }}"}'
-          body: >-
-            { "DOCKER_PASSWORD": "${{ secrets.GITHUB_TOKEN }}", 
-            "DOCKER_PROJECT": "${{ github.event.repository.name }}",
-            "DOCKER_COMPOSE": "${{ needs.build.outputs.docker-compose }}",
-            "DOCKER_TAG": "${{ needs.build.outputs.tag }}",
-            "ENV_VARIABLES": "${{ secrets.ENV_VARIABLES }}" }
-
-      - name: Kill VPN connection
-        if: always()
+        env:
+          WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
+          WEBHOOK_TOKEN: ${{ secrets.WEBHOOK_TOKEN }}
+          CF_ID: ${{ secrets.CF_ACCESS_CLIENT_ID }}
+          CF_SECRET: ${{ secrets.CF_ACCESS_CLIENT_SECRET }}
+          DOCKER_TAG: ${{ needs.build.outputs.tag }}
+          DOCKER_COMPOSE: ${{ needs.build.outputs.docker-compose }}
+          DOCKER_PROJECT: ${{ github.event.repository.name }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ENV_VARIABLES: ${{ secrets.ENV_VARIABLES }}
         run: |
-          sudo killall openvpn
+          jq -n \
+            --arg p "$GH_TOKEN" \
+            --arg proj "$DOCKER_PROJECT" \
+            --arg comp "$DOCKER_COMPOSE" \
+            --arg tag "$DOCKER_TAG" \
+            --arg env "$ENV_VARIABLES" \
+            '{DOCKER_PASSWORD:$p,DOCKER_PROJECT:$proj,DOCKER_COMPOSE:$comp,DOCKER_TAG:$tag,ENV_VARIABLES:$env}' > body.json
+          curl -f --retry 3 --retry-delay 5 -X POST "$WEBHOOK_URL" \
+            -H "Content-Type: application/json" \
+            -H "X-Token: $WEBHOOK_TOKEN" \
+            -H "CF-Access-Client-Id: $CF_ID" \
+            -H "CF-Access-Client-Secret: $CF_SECRET" \
+            --data @body.json
 
-      # Wait for the server to retrieve the image
-      - name: Sleep for 180 seconds
-        run: sleep 180
+      - name: Healthcheck new sha live
+        env:
+          EXPECTED_SHA: ${{ github.sha }}
+        run: |
+          for i in $(seq 1 36); do
+            LIVE_SHA=$(curl -fsS https://david.bertet.fr/api/health | jq -r .sha) && \
+            [ "$LIVE_SHA" = "$EXPECTED_SHA" ] && echo "live $LIVE_SHA" && exit 0
+            echo "try $i: live=${LIVE_SHA:-unreachable} want=$EXPECTED_SHA"
+            sleep 5
+          done; echo "healthcheck failed"; exit 1

@@ -7,7 +7,8 @@
     "start": "node -r dotenv/config ./dist/server/entry.mjs",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "test": "node --test src/lib/health.test.ts"
   },
   "dependencies": {
     "@astrojs/node": "^6.0.3",
