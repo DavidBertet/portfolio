@@ -36,7 +36,7 @@ RUN npm run build
 # EXPOSE 8080
 
 # -- SSR
-FROM base as runtime
+FROM base AS runtime
 
 ARG GITHUB_SHA=dev
 ENV GITHUB_SHA=$GITHUB_SHA
@@ -47,4 +47,4 @@ COPY --from=build /app/dist ./dist
 ENV HOST=0.0.0.0
 ENV PORT=8080
 EXPOSE 8080
-CMD npm run start
+CMD ["npm", "run", "start"]
