@@ -7,13 +7,18 @@ import Project from "../components/Project.astro";
 import Title from "../components/Title.astro";
 import Layout from "../layouts/Layout.astro";
 
-const experiences = await Astro.glob("../content/experiences/*.md");
-const work = await Astro.glob("../content/work/*.md");
-const perso = await Astro.glob("../content/perso/*.md");
+const experienceModules = import.meta.glob("../content/experiences/*.md", { eager: true });
+const workModules = import.meta.glob("../content/work/*.md", { eager: true });
+const persoModules = import.meta.glob("../content/perso/*.md", { eager: true });
+const toEntries = (mods: Record<string, any>) =>
+  Object.values(mods).map((mod: any) => ({ frontmatter: mod.frontmatter, Content: mod.default ?? mod.Content }));
+const experiences = toEntries(experienceModules);
+const work = toEntries(workModules);
+const perso = toEntries(persoModules);
 ---
 
 <Layout title="David Bertet">
-  <main>
+  <main class="home">
     <header class=" p-12 bg-[#476f83] text-gray-200">
       <div class="grid-cols-0 grid gap-4 md:grid-cols-2">
         <div>
@@ -117,22 +122,20 @@ const perso = await Astro.glob("../content/perso/*.md");
   <Footer />
 </Layout>
 
-<style>
-  @tailwind base;
-  @tailwind components;
-  @tailwind utilities;
+<style is:global>
+  @reference "../styles/global.css";
 
   @layer base {
-    section {
+    .home > section {
       @apply p-12;
     }
 
-    section:nth-child(even) {
+    .home > section:nth-child(even) {
       @apply bg-[#bed1da];
     }
 
-    section:nth-child(odd) {
+    .home > section:nth-child(odd) {
       @apply bg-[#c1dae6];
-    }    
+    }
   }
 </style>

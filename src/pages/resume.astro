@@ -1,10 +1,14 @@
 ---
-import { Icon } from "astro-icon";
+import { Icon } from "astro-icon/components";
+
+import "../styles/global.css";
 
 import * as summary from "../content/summary.md";
-const skills = await Astro.glob("../content/skills/*.md");
-const experiences = await Astro.glob("../content/experiences/*.md");
-const perso = await Astro.glob("../content/perso/*.md");
+const toEntries = (mods: Record<string, any>) =>
+  Object.values(mods).map((mod: any) => ({ frontmatter: mod.frontmatter, Content: mod.default ?? mod.Content }));
+const skills = toEntries(import.meta.glob("../content/skills/*.md", { eager: true }));
+const experiences = toEntries(import.meta.glob("../content/experiences/*.md", { eager: true }));
+const perso = toEntries(import.meta.glob("../content/perso/*.md", { eager: true }));
 
 import { createCanvas, GlobalFonts } from "@napi-rs/canvas";
 
@@ -27,7 +31,6 @@ const phoneImage = canvas.toDataURL('image/png')
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Resume</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.15/dist/tailwind.min.css">
   <link rel="icon" type="image/png" href="favicon.png">
   <style>
     @media print {
@@ -43,31 +46,31 @@ const phoneImage = canvas.toDataURL('image/png')
 </head>
 <body class="bg-white font-sans h-resume w-[1100px] m-auto p-4">
   <div class=" flex flex-row items-center">
-    <div class="pe-13 grow">
+    <div class="grow">
       <h1 class="text-5xl font-bold p-name">David Bertet</h1>
       <div class="prose mt-4 leading-6 font-medium text-gray-500 w-full max-w-full"><summary.Content /></div>
     </div>
 
     <section>
       <ul class="space-y-2 mt-6">
-        <li class="flex place-content-end">
+        <li class="flex items-center place-content-end">
           Sunnyvale, CA
-          <Icon class="flex-shrink-0 aspect-square w-5 ms-1 text-blue-500" name="mdi:location" />
+          <Icon class="flex-shrink-0 h-5 w-5 ms-1 text-blue-500" name="mdi:location" />
         </li>
-        <li class="flex place-content-end">
+        <li class="flex items-center place-content-end">
           <a href=`${import.meta.env.BASE_URL}redirect/email`>
-            <img class="w-[200px]" src={emailImage}/>
+            <img width="200" src={emailImage}/>
           </a>
-          <Icon class="flex-shrink-0 aspect-square w-5 ms-1 text-blue-500" name="mdi:email" />
+          <Icon class="flex-shrink-0 h-5 w-5 ms-1 text-blue-500" name="mdi:email" />
         </li>
-        <li class="flex place-content-end">
-          <img class="w-[200px]" src={phoneImage} /><Icon class="flex-shrink-0 aspect-square w-5 ms-1 text-blue-500" name="mdi:phone" />
+        <li class="flex items-center place-content-end">
+          <img width="200" src={phoneImage} /><Icon class="flex-shrink-0 h-5 w-5 ms-1 text-blue-500" name="mdi:phone" />
         </li>
-        <li class="flex place-content-end">
-          <a href="https://david.bertet.fr" target="_blank" rel="noopener noreferrer">david.bertet.fr</a><Icon class="aspect-square w-5 ms-1 text-blue-500" name="mdi:web" />
+        <li class="flex items-center place-content-end">
+          <a href="https://david.bertet.fr" target="_blank" rel="noopener noreferrer">david.bertet.fr</a><Icon class="h-5 w-5 ms-1 text-blue-500" name="mdi:web" />
         </li>
-        <li class="flex place-content-end">
-          <a href="https://www.github.com/DavidBertet" target="_blank" rel="noopener noreferrer">github.com/DavidBertet</a><Icon class="aspect-square w-5 ms-1 text-blue-500" name="mdi:github" />
+        <li class="flex items-center place-content-end">
+          <a href="https://www.github.com/DavidBertet" target="_blank" rel="noopener noreferrer">github.com/DavidBertet</a><Icon class="h-5 w-5 ms-1 text-blue-500" name="mdi:github" />
         </li>
       </ul>      
     </section>
@@ -118,20 +121,20 @@ const phoneImage = canvas.toDataURL('image/png')
             )
             .map(experience => (
               <div class="mb-2 mt-5">
-                <div class="flex">
+                <div class="flex items-center">
                   <h3 class="text-xl font-semibold p-job-title flex-grow">{experience.frontmatter.role}</h3>
-                  <div class="flex">
+                  <div class="flex items-center">
                     <p class="p-description text-gray-600">{experience.frontmatter.location}</p>
-                    <Icon class="aspect-square w-5 ms-1 text-blue-500" name="mdi:location" />
+                    <Icon class="h-5 w-5 ms-1 text-blue-500" name="mdi:location" />
                   </div>
                 </div>
 
                 <div class="flex items-center">
                   <p class="text-blue-500 text-">{experience.frontmatter.enterprise}</p>
                   <p class="ms-1 text-gray-500 flex-grow">- {experience.frontmatter.description}</p>
-                  <div class="flex">
+                  <div class="flex items-center">
                     <p class="p-description text-gray-600">{experience.frontmatter.dates}</p>
-                    <Icon class="aspect-square w-5 ms-1 text-blue-500" name="mdi:calendar" />
+                    <Icon class="h-5 w-5 ms-1 text-blue-500" name="mdi:calendar" />
                   </div>
                 </div>
 

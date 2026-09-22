@@ -1,0 +1,7 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme {
+  --font-body: "Josefin Sans", sans-serif;
+  --grid-template-columns-project: repeat(auto-fill, minmax(250px, 1fr));
+}
